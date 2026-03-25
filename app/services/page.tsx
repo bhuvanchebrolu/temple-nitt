@@ -232,20 +232,19 @@ export default function PoojariServices() {
                     className="group relative p-8 bg-white/60 hover:bg-white rounded-[2.5rem] border border-gray-100 hover:border-primary/20 transition-all duration-700 shadow-sm hover:shadow-xl hover:-translate-y-1 flex justify-between items-center"
                   >
                     <div>
-                      <p className="text-[10px] text-primary uppercase tracking-[0.3em] font-bold mb-1 flex items-center gap-2">
-                        <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
+                      <p className="text-[15px] text-primary uppercase tracking-[0.1em] font-bold mb-3">
                         {p.timing}
                       </p>
                       <h4 className="text-3xl font-serif font-bold text-gray-950 group-hover:text-primary transition-colors">
-                        {p.occasion}
+                        {p.name}
                       </h4>
                       <p className="text-sm text-gray-400 font-medium italic mt-1 font-serif">
                         {p.description}
                       </p>
                     </div>
                     <div className="text-right border-l border-gray-100 pl-8 min-w-[140px]">
-                      <span className="block text-[10px] uppercase tracking-widest text-gray-400 font-bold mb-1 font-sans">
-                        Sponsorship
+                      <span className="block text-[12px] uppercase tracking-widest text-gray-400 font-bold mb-1 font-sans">
+                        Charge
                       </span>
                       <span className="text-2xl font-light text-gray-900 group-hover:scale-110 block transition-transform">
                         {p.charges}
