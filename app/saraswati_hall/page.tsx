@@ -284,8 +284,8 @@ export default function SaraswatiHall() {
       {/* --- 4. THE GALLERY OF 56 SAINTS --- */}
       <section className="py-28 max-w-7xl mx-auto px-6">
         <div className="text-center mb-24">
-          <h3 className="text-5xl font-serif font-bold text-gray-950 mb-6">
-            Gallery of <span className="italic text-primary">Grace</span>
+          <h3 className="text-5xl font-serif font-bold text-gray-950 mb-6 italic">
+            Gallery of <span className="text-orange-600">Grace</span>
           </h3>
           <p className="text-gray-500 font-light max-w-2xl mx-auto italic leading-relaxed text-lg">
             This Mandapam houses pictures of 56 Saints, Sages, and revered Gurus
@@ -294,41 +294,39 @@ export default function SaraswatiHall() {
         </div>
 
         {loading ? (
-          <div className="text-center py-20 italic animate-pulse">
-            Loading Gallery of Grace...
+          <div className="text-center py-20 italic animate-pulse text-orange-800">
+            Invoking the Gallery of Grace...
           </div>
         ) : (
+          /* Grid: 2 columns on mobile, 4 on desktop */
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-10">
             {saints.map((saint) => (
               <div
                 key={saint.id}
+                onClick={() => setSelectedSaint(saint)}
                 className="group relative cursor-pointer"
-                // onClick={() => setSelectedSaint(saint)}
               >
                 {/* Saint Card Container */}
-                <div className="relative aspect-[3/4] bg-white rounded-2xl overflow-hidden border border-orange-100 shadow-sm transition-all duration-500 group-hover:shadow-2xl group-hover:-translate-y-2 group-hover:border-accent active:scale-95">
+                <div className="relative aspect-[3/4] bg-white rounded-2xl overflow-hidden border border-orange-100 shadow-sm transition-all duration-500 hover:shadow-2xl hover:-translate-y-2 hover:border-orange-400 active:scale-95">
                   {/* Image */}
                   <Image
                     src={saint.image}
                     alt={saint.name}
                     fill
-                    className="object-cover transition-transform duration-700 group-hover:scale-110"
+                    className="object-contain transition-transform duration-700 group-hover:scale-110"
                   />
 
-                  {/* Overlay: Works on Hover (Laptop) AND Tap (Mobile) */}
-                  <div className="absolute inset-0 bg-maroon/80 opacity-0 group-hover:opacity-90 group-active:opacity-90 transition-opacity duration-500 flex flex-col justify-end p-4 md:p-6 backdrop-blur-sm">
-                    <p className="text-white text-[10px] md:text-xs font-light italic leading-relaxed line-clamp-6 mb-2 transform translate-y-4 group-hover:translate-y-0 group-active:translate-y-0 transition-transform duration-500">
-                      &quot;{saint.bio}&quot;
-                    </p>
-                    <span className="text-[8px] md:text-[10px] text-accent font-bold uppercase tracking-widest">
-                      Read More →
+                  {/* Permanent "Tap to know more" Overlay */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#5a1f1f]/90 via-[#5a1f1f]/20 to-transparent opacity-100 transition-opacity duration-500 flex flex-col justify-end p-4 md:p-6 text-center">
+                    <span className="text-[9px] md:text-[10px] text-orange-200 font-bold uppercase tracking-[0.2em] mb-1 drop-shadow-md">
+                      Tap to know more
                     </span>
                   </div>
                 </div>
 
                 {/* Name Label */}
-                <div className="mt-4 text-center">
-                  <p className="text-[10px] md:text-xs font-bold uppercase tracking-[0.2em] md:tracking-[0.3em] text-gray-400 group-hover:text-maroon transition-colors leading-tight">
+                <div className="mt-4 text-center px-2">
+                  <p className="text-[10px] md:text-xs font-bold uppercase tracking-[0.2em] text-gray-500 group-hover:text-[#5a1f1f] transition-colors leading-tight">
                     {saint.name}
                   </p>
                 </div>
@@ -337,6 +335,60 @@ export default function SaraswatiHall() {
           </div>
         )}
       </section>
+
+      {/* --- 6. SAINT DETAIL MODAL --- */}
+      {selectedSaint && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 md:p-10 backdrop-blur-xl bg-black/60 animate-in fade-in duration-300">
+          {/* Clicking the background also closes the modal */}
+          <div
+            className="absolute inset-0 cursor-pointer"
+            onClick={() => setSelectedSaint(null)}
+          />
+
+          <div className="relative w-full max-w-4xl bg-white rounded-[2.5rem] md:rounded-[4rem] shadow-2xl overflow-hidden flex flex-col md:flex-row animate-in zoom-in-95 duration-300">
+            {/* Close Button */}
+            <button
+              onClick={() => setSelectedSaint(null)}
+              className="absolute top-6 right-6 w-10 h-10 rounded-full bg-white/90 backdrop-blur-md shadow-lg flex items-center justify-center text-gray-950 hover:bg-[#5a1f1f] hover:text-white transition-all z-50 border border-orange-100"
+            >
+              <span className="text-xl">✕</span>
+            </button>
+
+            {/* Image Side */}
+            <div className="relative w-full md:w-1/2 h-[300px] md:h-auto bg-gray-100">
+              <Image
+                src={selectedSaint.image}
+                alt={selectedSaint.name}
+                fill
+                className="object-contain"
+              />
+            </div>
+
+            {/* Content Side */}
+            <div className="w-full md:w-1/2 p-8 md:p-16 flex flex-col justify-center bg-white">
+              <h2 className="text-3xl md:text-5xl font-serif font-bold text-gray-950 mb-6 leading-tight">
+                {selectedSaint.name}
+              </h2>
+              <div className="h-1 w-12 bg-orange-500 mb-8" />
+
+              <div className="max-h-[250px] overflow-y-auto pr-2 custom-scrollbar">
+                <p className="text-gray-600 italic text-base md:text-lg leading-relaxed whitespace-pre-line">
+                  &quot;{selectedSaint.bio}&quot;
+                </p>
+              </div>
+
+              <div className="mt-12 pt-8 border-t border-orange-100 flex items-center gap-4">
+                <div className="w-10 h-10 rounded-full border border-orange-200 flex items-center justify-center text-orange-600 font-serif text-xl">
+                  ॐ
+                </div>
+                <p className="text-[10px] text-gray-400 uppercase font-bold tracking-widest">
+                  Embodies Guru Tattva
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* --- 5. RAMANA QUOTE SECTION --- */}
       <section className="py-32 bg-maroon relative overflow-hidden">
@@ -368,41 +420,39 @@ export default function SaraswatiHall() {
             onClick={() => setSelectedSaint(null)}
           />
 
-          <div className="relative w-full max-w-4xl bg-white rounded-[4rem] shadow-[0_50px_100px_-20px_rgba(0,0,0,0.6)] overflow-hidden flex flex-col md:flex-row animate-in zoom-in-95 duration-500">
+          <div className="relative w-full max-w-4xl max-h-[90vh] md:max-h-[85vh] bg-white rounded-[2.5rem] md:rounded-[4rem] shadow-[0_50px_100px_-20px_rgba(0,0,0,0.6)] overflow-hidden flex flex-col md:flex-row animate-in zoom-in-95 duration-500">
+            {/* Close Button */}
             <button
               onClick={() => setSelectedSaint(null)}
-              className="absolute top-8 right-8 w-12 h-12 rounded-full bg-gray-100 flex items-center justify-center hover:bg-maroon hover:text-white transition-all z-20 shadow-sm"
+              className="absolute top-6 right-6 w-10 h-10 md:w-12 md:h-12 cursor-pointer rounded-full bg-white/80 backdrop-blur-md flex items-center justify-center hover:bg-maroon hover:text-white transition-all z-50 shadow-sm border border-orange-100"
             >
-              ✕
+              <span className="text-lg">✕</span>
             </button>
 
-            <div className="relative w-full md:w-1/2 h-[350px] md:h-auto bg-gray-200">
+            {/* Image Container - Fixed height on mobile, auto-height on desktop */}
+            <div className="relative w-full md:w-1/2 h-[280px] sm:h-[350px] md:h-auto bg-gray-50 border-b md:border-b-0 md:border-r border-orange-50">
               <Image
                 src={selectedSaint.image}
                 alt={selectedSaint.name}
                 fill
-                className="object-cover"
+                className="object-contain md:object-center"
               />
             </div>
 
-            <div className="w-full md:w-1/2 p-10 md:p-20 flex flex-col justify-center bg-gradient-to-br from-white to-orange-50/30">
-              <h2 className="text-4xl md:text-5xl font-serif font-bold text-gray-950 mb-8 tracking-tight">
-                {selectedSaint.name}
-              </h2>
-              <div className="h-1 w-16 bg-accent mb-10" />
-              <p className="text-gray-600 leading-relaxed text-lg font-light italic whitespace-pre-line">
-                &quot;{selectedSaint.bio}&quot;
-              </p>
+            {/* Content Container - Scrollable if text is too long */}
+            <div className="w-full md:w-1/2 p-8 md:p-14 lg:p-20 flex flex-col justify-center bg-gradient-to-br from-white to-orange-50/30 overflow-y-auto">
+              <div className="max-h-full">
+                <h2 className="text-3xl md:text-4xl font-serif font-bold text-gray-950 mb-4 md:mb-6 tracking-tight leading-tight">
+                  {selectedSaint.name}
+                </h2>
 
-              <div className="mt-16 pt-8 border-t border-red-100 flex items-center gap-4">
-                <div className="w-10 h-10 rounded-full border border-red-200 flex items-center justify-center bg-red-50/30 shadow-sm transition-transform hover:scale-110">
-                  <span className="text-red-600 font-serif italic text-xl drop-shadow-[0_0_8px_rgba(220,38,38,0.2)]">
-                    ॐ
-                  </span>
-                </div>
-                <p className="text-[10px] text-gray-400 uppercase tracking-widest font-bold">
-                  Embodies Guru Tattva
+                <div className="h-1 w-16 bg-accent mb-6 md:mb-10" />
+
+                <p className="text-gray-600 leading-relaxed text-base md:text-lg font-light italic whitespace-pre-line">
+                  &quot;{selectedSaint.bio}&quot;
                 </p>
+
+               
               </div>
             </div>
           </div>
