@@ -298,27 +298,37 @@ export default function SaraswatiHall() {
             Loading Gallery of Grace...
           </div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-10">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-10">
             {saints.map((saint) => (
               <div
-                key={saint.id} 
-                className="group relative"
+                key={saint.id}
+                className="group relative cursor-pointer"
+                // onClick={() => setSelectedSaint(saint)}
               >
-                <div className="relative aspect-[3/4] bg-white rounded-2xl overflow-hidden border border-orange-100 shadow-sm transition-all duration-500 group-hover:shadow-2xl group-hover:-translate-y-2 group-hover:border-accent">
+                {/* Saint Card Container */}
+                <div className="relative aspect-[3/4] bg-white rounded-2xl overflow-hidden border border-orange-100 shadow-sm transition-all duration-500 group-hover:shadow-2xl group-hover:-translate-y-2 group-hover:border-accent active:scale-95">
+                  {/* Image */}
                   <Image
                     src={saint.image}
                     alt={saint.name}
                     fill
                     className="object-cover transition-transform duration-700 group-hover:scale-110"
                   />
-                  <div className="absolute inset-0 bg-maroon/80 opacity-0 group-hover:opacity-90 transition-opacity duration-500 flex flex-col justify-end p-6 backdrop-blur-sm">
-                    <p className="text-white text-xs font-light italic leading-relaxed line-clamp-4 mb-4 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
+
+                  {/* Overlay: Works on Hover (Laptop) AND Tap (Mobile) */}
+                  <div className="absolute inset-0 bg-maroon/80 opacity-0 group-hover:opacity-90 group-active:opacity-90 transition-opacity duration-500 flex flex-col justify-end p-4 md:p-6 backdrop-blur-sm">
+                    <p className="text-white text-[10px] md:text-xs font-light italic leading-relaxed line-clamp-6 mb-2 transform translate-y-4 group-hover:translate-y-0 group-active:translate-y-0 transition-transform duration-500">
                       &quot;{saint.bio}&quot;
                     </p>
+                    <span className="text-[8px] md:text-[10px] text-accent font-bold uppercase tracking-widest">
+                      Read More →
+                    </span>
                   </div>
                 </div>
+
+                {/* Name Label */}
                 <div className="mt-4 text-center">
-                  <p className="text-xs font-bold uppercase tracking-[0.3em] text-gray-400 group-hover:text-maroon transition-colors">
+                  <p className="text-[10px] md:text-xs font-bold uppercase tracking-[0.2em] md:tracking-[0.3em] text-gray-400 group-hover:text-maroon transition-colors leading-tight">
                     {saint.name}
                   </p>
                 </div>
