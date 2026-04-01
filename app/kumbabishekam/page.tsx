@@ -85,6 +85,17 @@ const mandalaCharges = [
   { type: "Abishegam, Flowers & Prasadam", price: "Rs. 1,500" },
 ];
 
+const scrollToSection = (e: React.MouseEvent<HTMLAnchorElement>) => {
+  e.preventDefault();
+  const element = document.getElementById("mandala-poojai");
+  if (element) {
+    element.scrollIntoView({
+      behavior: "smooth",
+      block: "start",
+    });
+  }
+};
+
 export default function KumbabishekamPage() {
   const [schedule, setSchedule] = useState(initialSchedule);
 
@@ -137,7 +148,8 @@ export default function KumbabishekamPage() {
           </h1>
           <div className="mt-8 md:mt-12 flex flex-col items-center justify-center gap-6 md:gap-8">
             <Link
-              href="/services"
+              href="#mandala-poojai"
+              onClick={scrollToSection}
               className="w-full md:w-auto px-10 py-4 bg-accent text-maroon rounded-full text-xs font-bold uppercase tracking-[0.2em] hover:bg-white transition-all duration-500 shadow-xl active:scale-95 text-center"
             >
               Sponsor Pooja
@@ -368,7 +380,10 @@ export default function KumbabishekamPage() {
       </section>
 
       {/* --- 1. FEATURED SECTION: MANDALA POOJAI --- */}
-      <section className="mb-16 md:mb-32 px-4 md:px-0">
+      <section
+        id="mandala-poojai"
+        className="mb-16 md:mb-32 px-4 md:px-0 scroll-mt-20"
+      >
         {/* Reduced border-radius and padding for mobile */}
         <div className="relative p-6 md:p-12 rounded-[2rem] md:rounded-[4rem] bg-gradient-to-br from-orange-50 to-white border border-orange-100 shadow-xl overflow-hidden">
           {/* Scaled down background Om symbol for mobile */}

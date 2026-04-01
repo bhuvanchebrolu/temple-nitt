@@ -1,5 +1,10 @@
 @import "tailwindcss";
 
+/* In your globals.css */
+html {
+  scroll-behavior: smooth;
+}
+
 @theme {
   /* Updated Palette: Saffron, Orange, Yellow, Maroon */
   --color-primary: #ea580c;       /* Spiritual Orange (Saffron-tinted) */

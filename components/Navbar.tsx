@@ -5,6 +5,7 @@ import Link from "next/link";
 
 const allLinks = [
   { name: "Home", href: "/" },
+  { name: "Universal Prayer", href: "/prayer" },
   { name: "About", href: "/about" },
   { name: "Events", href: "/events" },
   { name: "Kumbabishekam", href: "/kumbabishekam" },

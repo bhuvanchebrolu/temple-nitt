@@ -46,7 +46,7 @@ export default function HomePage() {
             </button>
 
             {/* Content Link */}
-            <Link href="/kumbabishekam" className="block p-1">
+            <Link href="/kumbabishekam#mandala-poojai" className="block p-1">
               <div className="p-8 md:p-12 border-4 border-dashed border-orange-100 rounded-[2.8rem] text-center hover:border-orange-300 transition-colors">
                 <span className="inline-block px-4 py-1 rounded-full bg-orange-100 text-orange-700 text-[10px] font-bold uppercase tracking-widest mb-6">
                   Upcoming Event

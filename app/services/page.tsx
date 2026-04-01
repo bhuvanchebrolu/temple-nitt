@@ -70,7 +70,7 @@ export default function PoojariServices() {
             </h2>
           </div>
           <h1 className="text-4xl md:text-6xl font-serif font-bold tracking-tight text-gray-950">
-            Sacred <span className="italic text-primary">Offerings</span>
+            Pooja <span className="italic text-primary">Services</span>
           </h1>
         </header>
 
@@ -216,9 +216,7 @@ export default function PoojariServices() {
           <div className="text-4xl md:text-5xl py-4 md:py-5 text-red-900 opacity-50 select-none cursor-default">
             ॐ
           </div>
-          <p className="text-[9px] md:text-[10px] text-gray-400 uppercase tracking-[0.4em] font-bold">
-            Kumbabishekam Committee
-          </p>
+         
         </footer>
       </div>
     </main>

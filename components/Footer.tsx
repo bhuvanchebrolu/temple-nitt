@@ -38,6 +38,14 @@ export default function Footer() {
             </li>
             <li>
               <Link
+                href="/prayer"
+                className="hover:text-orange-400 transition-colors duration-300 block"
+              >
+                Universal Prayer
+              </Link>
+            </li>
+            <li>
+              <Link
                 href="/kumbabishekam"
                 className="hover:text-orange-400 transition-colors duration-300 block"
               >
