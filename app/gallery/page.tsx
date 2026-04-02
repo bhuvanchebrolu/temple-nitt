@@ -192,7 +192,7 @@ export default function TempleBackgroundGallery() {
                         <span className="text-[13px] font-bold text-accent uppercase tracking-[0.3em] mb-2 block">
                           {img.tag}
                         </span>
-                        <h3 className="text-2xl md:text-4xl font-serif font-bold text-white leading-tight">
+                        <h3 className="text-2xl md:text-3xl font-serif font-bold text-white leading-tight">
                           {img.title
                             .split(/(\s+[\u0B80-\u0BFF].*)/)
                             .map((part, index) => (
