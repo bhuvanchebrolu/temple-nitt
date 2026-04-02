@@ -54,7 +54,7 @@ export default function BalaviharPage() {
             Shaping the Future
           </h2>
           <h1 className="text-5xl md:text-7xl font-serif font-bold text-gray-900 tracking-tighter">
-            Balavikas <span className="italic text-primary/80">Classes</span>
+            Balavihar <span className="italic text-primary/80">Classes</span>
           </h1>
           <p className="mt-6 text-gray-600 max-w-2xl mx-auto text-lg leading-relaxed">
             Nurturing the next generation with the timeless values of Sanatana

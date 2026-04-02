@@ -113,7 +113,7 @@ export default function Footer() {
                 href="/classes"
                 className="hover:text-orange-400 transition-colors duration-300 block"
               >
-                Balavikas Classes
+                Balavihar Classes
               </Link>
             </li>
             <li>

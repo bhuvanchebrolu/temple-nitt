@@ -9,22 +9,14 @@ export const gallery = defineType({
                         name: "title",
                         title: "Image Title",
                         type: "string",
+                        description: "English and Tamil title (e.g. Navagraham நவக்கிரகம்)",
                         validation: (Rule) => Rule.required(),
                 }),
                 defineField({
                         name: "category",
                         title: "Category",
-                        type: "string",
-                        options: {
-                                list: [
-                                        { title: "Temple", value: "Temple" },
-                                        { title: "Kumbabishekam", value: "Kumbabishekam" }, 
-                                        { title: "Balavikaas", value: "Balavikaas"},
-                                        { title: "Navaratri 2025", value: "Navaratri 2025" },
-                                        { title: "Margazhi 2025", value: "Margazhi 2025" },
-                                        { title: "Balalayam", value: "Balalayam" },
-                                ],
-                        },
+                        type: "reference",
+                        to: [{ type: "category" }], // Points to the schema we created above
                         validation: (Rule) => Rule.required(),
                 }),
                 defineField({
