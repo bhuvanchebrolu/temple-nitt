@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect, useMemo, Suspense } from "react";
 import Image from "next/image";
 import { client } from "@/sanity/lib/client";
 import imageUrlBuilder from "@sanity/image-url";
@@ -32,9 +32,9 @@ const GALLERY_QUERY = `*[_type == "gallery"] | order(_createdAt desc) {
 
 const CATEGORY_QUERY = `*[_type == "category"] | order(title asc).title`;
 
-export default function TempleBackgroundGallery() {
+function GalleryContent() {
   const searchParams = useSearchParams();
-  const categoryParam = searchParams.get("category"); 
+  const categoryParam = searchParams.get("category");
   const [allImages, setAllImages] = useState<GalleryImage[]>([]);
   const [categories, setCategories] = useState<string[]>([]);
   const [activeCategory, setActiveCategory] = useState("");
@@ -225,5 +225,21 @@ export default function TempleBackgroundGallery() {
         </div>
       </div>
     </main>
+  );
+}
+
+export default function TempleBackgroundGallery() {
+  return (
+    <Suspense
+      fallback={
+        <div className="min-h-screen bg-[#1a1612] flex items-center justify-center">
+          <p className="text-accent font-serif italic animate-pulse text-xl">
+            Loading Sacred Visions...
+          </p>
+        </div>
+      }
+    >
+      <GalleryContent />
+    </Suspense>
   );
 }
