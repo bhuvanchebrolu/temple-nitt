@@ -4,6 +4,7 @@ import React, { useState, useEffect, useMemo } from "react";
 import Image from "next/image";
 import { client } from "@/sanity/lib/client";
 import imageUrlBuilder from "@sanity/image-url";
+import { useSearchParams } from "next/navigation";
 
 // Image Builder Setup
 const builder = imageUrlBuilder(client);
@@ -32,6 +33,8 @@ const GALLERY_QUERY = `*[_type == "gallery"] | order(_createdAt desc) {
 const CATEGORY_QUERY = `*[_type == "category"] | order(title asc).title`;
 
 export default function TempleBackgroundGallery() {
+  const searchParams = useSearchParams();
+  const categoryParam = searchParams.get("category"); 
   const [allImages, setAllImages] = useState<GalleryImage[]>([]);
   const [categories, setCategories] = useState<string[]>([]);
   const [activeCategory, setActiveCategory] = useState("");
@@ -50,8 +53,10 @@ export default function TempleBackgroundGallery() {
         setAllImages(imagesData);
         setCategories(categoriesData);
 
-        // Set default category to the first one available, or "Temple" if it exists
-        if (categoriesData.length > 0) {
+        // 4. LOGIC: Check URL param first, then fallback to "Temple" or first category
+        if (categoryParam && categoriesData.includes(categoryParam)) {
+          setActiveCategory(categoryParam);
+        } else if (categoriesData.length > 0) {
           const defaultCat = categoriesData.includes("Temple")
             ? "Temple"
             : categoriesData[0];
@@ -64,7 +69,7 @@ export default function TempleBackgroundGallery() {
       }
     };
     fetchData();
-  }, []);
+  }, [categoryParam]);
 
   // Filter images based on category
   const filteredImages = useMemo(() => {

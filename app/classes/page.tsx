@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 const modules = [
   {
     age: "5 - 8 Years",
@@ -8,8 +10,8 @@ const modules = [
     topics: [
       "Simple Sanskrit Shlokas",
       "Stories from Ramayana",
-      "Values through Games",
-      "Bhajans",
+      "Values through Arts ,Crafts & Origami",
+      "Bajans & Tamil Hymns",
     ],
   },
   {
@@ -61,7 +63,14 @@ export default function BalaviharPage() {
             Dharma through stories, shlokas, and interactive Vedic learning.
           </p>
         </div>
-
+        <div className="text-center mt-12 mb-12">
+          <Link
+            href="/gallery?category=Balavihar"
+            className="inline-flex items-center gap-2 px-8 py-4 bg-primary text-white font-bold rounded-full text-xs tracking-widest hover:bg-primary/90 transition-all shadow-lg transform hover:scale-105 transition duration-300"
+          >
+            VIEW BALAVIHAR GALLERY <span>↗</span>
+          </Link>
+        </div>
         {/* Level Cards */}
         <div className="grid lg:grid-cols-3 gap-8 mb-20">
           {modules.map((module, idx) => (
@@ -69,17 +78,6 @@ export default function BalaviharPage() {
               key={idx}
               className={`divine-glass relative rounded-[3rem] p-10 border-b-8 ${module.border} transition-all duration-500`}
             >
-              <div
-                className={`w-20 h-20 ${module.color} rounded-2xl flex items-center justify-center mb-8 shadow-inner`}
-              >
-                <span className="text-primary font-bold text-sm text-center leading-none">
-                  AGE <br />{" "}
-                  <span className="text-xl font-serif">
-                    {module.age.split(" ")[0]}
-                  </span>
-                </span>
-              </div>
-
               <h3 className="text-2xl font-serif font-bold text-gray-950 mb-4">
                 {module.title}
               </h3>
@@ -139,9 +137,9 @@ export default function BalaviharPage() {
                   Schedule
                 </h4>
                 <p className="text-gray-600 text-sm leading-relaxed">
-                  Sessions are held every Sunday morning. We follow a structured
-                  curriculum that spans over the academic year, with breaks
-                  during major festivals.
+                  Classes are held every Sunday between 2:30 pm and 3:30 pm.
+                  Session involves Slokam Chanting, Activity of Art and Crafts
+                  and Storytelling.
                 </p>
               </div>
 
