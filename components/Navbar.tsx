@@ -15,7 +15,7 @@ const allLinks = [
   { name: "Articles", href: "/articles" },
   { name: "Timings", href: "/timings" },
   { name: "Pooja Services", href: "/services" },
-  { name: "Special Pooja Calendar 2026", href: "/calendar" },
+  { name: "Special Pooja Calendar 2026-27", href: "/calendar" },
   { name: "Balavihar Classes", href: "/classes" },
   { name: "Library", href: "/library" },
   { name: "Gallery", href: "/gallery" },

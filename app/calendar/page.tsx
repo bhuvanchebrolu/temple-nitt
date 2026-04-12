@@ -54,7 +54,7 @@ export default function CalendarPage() {
         <header className="text-center mb-10">
           <h1 className="text-4xl md:text-5xl font-serif font-bold text-maroon">
             Special Pooja{" "}
-            <span className="italic font-light text-accent">Calendar 2026</span>
+            <span className="italic font-light text-accent">Calendar 2026-27</span>
           </h1>
           <div className="w-20 h-1 bg-accent mx-auto mt-4" />
         </header>
