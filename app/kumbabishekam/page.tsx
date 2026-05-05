@@ -4,85 +4,8 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { client } from "@/sanity/lib/client";
 
-// initialSchedule serves as the structural template.
-const initialSchedule = [
-  {
-    date: "03 April 2026",
-    tamilDate: "20th Panguni",
-    day: "Friday",
-    sessions: [
-      {
-        type: "Morning",
-        time: "09:00 am - 12:30 pm",
-        slotId: "3_april_morning",
-        links: ["#"],
-      },
-      {
-        type: "Evening",
-        time: "05:30 pm - 09:00 pm",
-        slotId: "3_april_evening",
-        links: ["#"],
-      },
-    ],
-  },
-  {
-    date: "04 April 2026",
-    tamilDate: "21st Panguni",
-    day: "Saturday",
-    sessions: [
-      {
-        type: "Morning",
-        time: "08:30 am - 12:30 pm",
-        slotId: "4_april_morning",
-        links: ["#"],
-      },
-      {
-        type: "Evening",
-        time: "04:00 pm - 09:30 pm",
-        slotId: "4_april_evening",
-        links: ["#"],
-      },
-    ],
-  },
-  {
-    date: "05 April 2026",
-    tamilDate: "22nd Panguni",
-    day: "Sunday",
-    sessions: [
-      {
-        type: "Morning",
-        time: "08:30 am - 12:30 pm",
-        slotId: "5_april_morning",
-        links: ["#"],
-      },
-      {
-        type: "Evening",
-        time: "04:00 pm - 09:30 pm",
-        slotId: "5_april_evening",
-        links: ["#"],
-      },
-    ],
-  },
-  {
-    date: "06 April 2026",
-    tamilDate: "23rd Panguni",
-    day: "Monday",
-    sessions: [
-      {
-        type: "Morning",
-        time: "05:00 am - 12:00 pm",
-        slotId: "6_april_morning",
-        links: ["#"],
-      },
-      {
-        type: "Evening",
-        time: "04:00 pm - 09:30 pm",
-        slotId: "6_april_evening",
-        links: ["#"],
-      },
-    ],
-  },
-];
+type WebcastEntry = { date: string; day: string; session?: string; subtitle?: string; url: string };
+type WebcastGroup = { title: string; entries: WebcastEntry[] };
 
 const mandalaCharges = [
   { type: "Flowers", price: "Rs. 500" },
@@ -102,49 +25,45 @@ const scrollToSection = (e: React.MouseEvent<HTMLAnchorElement>) => {
 };
 
 export default function KumbabishekamPage() {
-  const [schedule, setSchedule] = useState(initialSchedule);
-  const [videoUrl, setVideoUrl] = useState("/Kumbabishekam_video.mp4"); // Fallback
+  const [webcastGroups, setWebcastGroups] = useState<WebcastGroup[]>([]);
+  const [videoUrl, setVideoUrl] = useState("/Kumbabishekam_video.mp4");
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // Fetch Webcast links and the Balalayam video URL from Sanity
-        const [links, balalayamData] = await Promise.all([
-          client.fetch(`*[_type == "webcast"]{sessionSlot, youtubeLink}`),
+        const [webcasts, balalayamData] = await Promise.all([
+          client.fetch(
+            `*[_type == "webcast" && defined(title) && defined(date) && defined(url)] | order(date asc){ title, date, day, session, subtitle, url }`,
+          ),
           client.fetch(
             `*[_type == "balalayam"][0]{ "url": videoFile.asset->url }`,
           ),
         ]);
 
-        // Update video if dynamic one exists
         if (balalayamData?.url) {
           setVideoUrl(balalayamData.url);
         }
 
-        // Merging Sanity URLs into local schedule
-       const updatedSchedule = initialSchedule.map((day) => ({
-         ...day,
-         sessions: day.sessions.map((session) => {
-           const match = links.find(
-             (l: any) => l.sessionSlot === session.slotId,
-           );
-
-           // Split the string by comma and trim whitespace
-           const linksArray = match?.youtubeLink
-             ? match.youtubeLink.split(",").map((s: string) => s.trim())
-             : ["#"];
-
-           return { ...session, links: linksArray }; // Changed key to 'links' (plural)
-         }),
-       }));
-
-        setSchedule(updatedSchedule);
+        // Group by title, entries already sorted by date from GROQ
+        const grouped: Record<string, WebcastGroup> = {};
+        for (const doc of webcasts) {
+          if (!grouped[doc.title]) {
+            grouped[doc.title] = { title: doc.title, entries: [] };
+          }
+          grouped[doc.title].entries.push({
+            date: doc.date,
+            day: doc.day,
+            session: doc.session,
+            subtitle: doc.subtitle,
+            url: doc.url,
+          });
+        }
+        setWebcastGroups(Object.values(grouped));
       } catch (err) {
         console.error("Error fetching data:", err);
       }
     };
 
-    // fetchLinks();
     fetchData();
   }, []);
 
@@ -187,189 +106,139 @@ export default function KumbabishekamPage() {
         <div className="grid lg:grid-cols-12 gap-12 lg:gap-16">
           <div className="lg:col-span-5 space-y-8">
             <div className="lg:sticky lg:top-32 text-center lg:text-left">
-              <h2 className="text-3xl md:text-5xl font-serif text-maroon leading-tight mb-6 md:mb-8">
-                Live <br className="hidden lg:block" />
-                <span className="italic font-light text-gray-400">
-                  Webcast Schedule
-                </span>
-              </h2>
-
-              <div className="relative group rounded-2xl md:rounded-[2rem] overflow-hidden shadow-2xl bg-black aspect-video mb-8 border border-accent/10">
+              <div className="relative group rounded-2xl md:rounded-[2rem] overflow-hidden shadow-2xl bg-black aspect-video mb-6 border border-accent/10">
                 <video
                   key={videoUrl}
                   className="w-full h-full object-cover"
                   controls
                   preload="metadata"
+                  suppressHydrationWarning
                 >
                   <source src={videoUrl} type="video/mp4" />
                 </video>
               </div>
 
-              <div className="p-6 md:p-8 bg-white border border-accent/10 rounded-2xl md:rounded-[2rem] shadow-sm">
-                <h5 className="font-bold text-[10px] uppercase tracking-widest text-accent mb-3">
-                  Contact for Seva
-                </h5>
-                <p className="text-maroon font-serif text-lg md:text-xl font-bold">
-                  Mrs. Karthika Panneerselvam
-                </p>
-                <p className="text-gray-500 mt-1 font-medium font-mono tracking-wider">
-                  +91 90476 92112
-                </p>
+              <div className="flex justify-center">
+                <a
+                  href="https://drive.google.com/drive/folders/1zqGvirXEBy3ADJvY5RNdcc0V6nXXVYdG?usp=sharing"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 px-6 py-3 bg-maroon text-accent text-xs font-bold uppercase tracking-widest rounded-xl hover:bg-maroon-light transition-colors shadow-md"
+                >
+                  ↗ Event Videos
+                </a>
               </div>
             </div>
           </div>
 
-          <div className="lg:col-span-7">
-            <div className="space-y-6 md:space-y-0 md:overflow-hidden md:rounded-[2.5rem] md:border md:border-accent/20 md:shadow-2xl md:bg-white">
-              <table className="hidden md:table w-full text-left border-collapse">
-                <thead className="bg-maroon text-accent">
-                  <tr>
-                    <th className="p-6 font-serif text-lg font-bold border-b border-accent/20">
-                      Date & Day
-                    </th>
-                    <th className="p-6 font-serif text-lg font-bold border-b border-accent/20">
-                      Session
-                    </th>
-                    <th className="p-6 font-serif text-lg font-bold border-b border-accent/20">
-                      Timing
-                    </th>
-                    <th className="p-6 font-serif text-lg font-bold border-b border-accent/20">
-                      Media
-                    </th>
-                  </tr>
-                </thead>
-                <tbody className="text-gray-800">
-                  {schedule.map((row, idx) => (
-                    <React.Fragment key={idx}>
-                      {row.sessions.map((session, sIdx) => (
+          <div className="lg:col-span-7 space-y-6">
+            {webcastGroups.length === 0 ? (
+              <div className="text-center py-20 text-gray-400 font-serif italic">
+                Webcast links will appear here once added.
+              </div>
+            ) : (
+              webcastGroups.map((group) => (
+                <div
+                  key={group.title}
+                  className="overflow-hidden rounded-[2rem] border border-accent/20 shadow-xl bg-white"
+                >
+                  {/* Group title header */}
+                  <div className="bg-maroon px-6 py-4">
+                    <h3 className="font-serif text-lg font-bold text-accent">
+                      {group.title}
+                    </h3>
+                  </div>
+
+                  {/* Desktop table */}
+                  <table className="hidden md:table w-full text-left border-collapse">
+                    <thead>
+                      <tr className="bg-maroon/5 text-gray-500">
+                        <th className="px-6 py-3 text-[10px] font-bold uppercase tracking-wider border-b border-accent/10">
+                          Date
+                        </th>
+                        <th className="px-6 py-3 text-[10px] font-bold uppercase tracking-wider border-b border-accent/10">
+                          Day
+                        </th>
+                        <th className="px-6 py-3 text-[10px] font-bold uppercase tracking-wider border-b border-accent/10">
+                          Session
+                        </th>
+                        <th className="px-6 py-3 text-[10px] font-bold uppercase tracking-wider border-b border-accent/10 text-right">
+                          Watch
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {group.entries.map((entry, i) => (
                         <tr
-                          key={sIdx}
-                          className="hover:bg-accent/5 border-b border-accent/10 last:border-0"
+                          key={i}
+                          className="border-b border-accent/5 last:border-0 hover:bg-accent/5 transition-colors"
                         >
-                          {sIdx === 0 && (
-                            <td
-                              className="p-6 border-r border-accent/10 bg-[#fffcf7]"
-                              rowSpan={row.sessions.length}
-                            >
-                              <p className="font-bold text-maroon text-lg">
-                                {row.date}
-                              </p>
-                              <p className="text-xs text-accent uppercase tracking-widest font-bold mt-1">
-                                {row.tamilDate}
-                              </p>
-                              <p className="text-sm text-gray-500 italic mt-2">
-                                {row.day}
-                              </p>
-                            </td>
-                          )}
-                          <td className="p-6">
-                            <span
-                              className={`px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-tighter ${session.type === "Morning" ? "bg-orange-100 text-orange-700" : "bg-blue-100 text-blue-700"}`}
-                            >
-                              {session.type}
-                            </span>
-                          </td>
-                          <td className="p-6 font-medium text-sm text-gray-600 font-mono tracking-tight">
-                            {session.time}
-                          </td>
-                          <td className="p-6">
-                            {session.links && session.links[0] !== "#" ? (
-                              <div className="flex flex-col items-end gap-2">
-                                {session.links && session.links[0] !== "#" ? (
-                                  session.links.map((url, i) => (
-                                    <a
-                                      key={i}
-                                      href={url}
-                                      target="_blank"
-                                      rel="noopener noreferrer"
-                                      className="px-4 py-2 bg-creme text-maroon text-[10px] font-bold rounded-lg border border-accent/10 whitespace-nowrap"
-                                    >
-                                      PHOTO GALLERY{" "}
-                                      {session.links.length > 1 ? i + 1 : ""}
-                                    </a>
-                                  ))
-                                ) : (
-                                  <span className="px-4 py-2 text-gray-300 text-[10px] font-bold italic">
-                                    SOON
-                                  </span>
-                                )}
-                              </div>
-                            ) : (
-                              <span className="text-xs font-bold text-gray-300 cursor-default">
-                                LINK SOON
-                              </span>
+                          <td className="px-6 py-4">
+                            <p className="font-bold text-maroon">{entry.date}</p>
+                            {entry.subtitle && (
+                              <p className="text-xs text-gray-500 mt-0.5">{entry.subtitle}</p>
                             )}
+                          </td>
+                          <td className="px-6 py-4 text-gray-500 italic text-sm">
+                            {entry.day}
+                          </td>
+                          <td className="px-6 py-4">
+                            {entry.session ? (
+                              <span className={`inline-block px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-tight ${entry.session === "Morning" ? "bg-orange-100 text-orange-700" : "bg-blue-100 text-blue-700"}`}>
+                                {entry.session}
+                              </span>
+                            ) : (
+                              <span className="text-gray-300 text-xs">—</span>
+                            )}
+                          </td>
+                          <td className="px-6 py-4 text-right">
+                            <a
+                              href={entry.url}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="inline-flex items-center gap-1.5 px-4 py-2 bg-maroon text-accent text-[10px] font-bold rounded-lg hover:bg-maroon-light transition-colors shadow-sm"
+                            >
+                              ▶ Watch Live
+                            </a>
                           </td>
                         </tr>
                       ))}
-                    </React.Fragment>
-                  ))}
-                </tbody>
-              </table>
+                    </tbody>
+                  </table>
 
-              <div className="md:hidden space-y-4">
-                {schedule.map((row, idx) => (
-                  <div
-                    key={idx}
-                    className="bg-white border border-accent/20 rounded-2xl overflow-hidden shadow-sm"
-                  >
-                    <div className="bg-maroon p-4 text-center">
-                      <p className="text-white font-bold">
-                        {row.date} ({row.day})
-                      </p>
-                      <p className="text-accent text-[10px] font-bold uppercase">
-                        {row.tamilDate}
-                      </p>
-                    </div>
-                    <div className="p-4 space-y-4">
-                      {row.sessions.map((session, sIdx) => (
-                        <div
-                          key={sIdx}
-                          className="flex items-start justify-between py-2 border-b border-accent/5 last:border-0"
-                        >
-                          <div>
-                            <p
-                              className={`text-[10px] font-bold uppercase ${
-                                session.type === "Morning"
-                                  ? "text-orange-600"
-                                  : "text-blue-600"
-                              }`}
-                            >
-                              {session.type}
-                            </p>
-                            <p className="text-xs font-mono text-gray-600">
-                              {session.time}
-                            </p>
-                          </div>
-
-                          {/* Container for the links - stacks them vertically on the right */}
-                          <div className="flex flex-col items-end gap-2">
-                            {session.links && session.links[0] !== "#" ? (
-                              session.links.map((url: string, i: number) => (
-                                <a
-                                  key={i}
-                                  href={url}
-                                  target="_blank"
-                                  rel="noopener noreferrer"
-                                  className="px-4 py-2 bg-creme text-maroon text-[10px] font-bold rounded-lg border border-accent/10 whitespace-nowrap text-center min-w-[120px]"
-                                >
-                                  PHOTO GALLERY{" "}
-                                  {session.links.length > 1 ? i + 1 : ""}
-                                </a>
-                              ))
-                            ) : (
-                              <span className="px-4 py-2 text-gray-300 text-[10px] font-bold italic">
-                                SOON
-                              </span>
-                            )}
-                          </div>
+                  {/* Mobile list */}
+                  <div className="md:hidden divide-y divide-accent/10">
+                    {group.entries.map((entry, i) => (
+                      <div
+                        key={i}
+                        className="px-4 py-3 flex items-center justify-between gap-4"
+                      >
+                        <div>
+                          <p className="font-bold text-maroon text-sm">{entry.date}</p>
+                          {entry.subtitle && (
+                            <p className="text-xs text-gray-500 mt-0.5">{entry.subtitle}</p>
+                          )}
+                          <p className="text-xs text-gray-400 italic">{entry.day}</p>
+                          {entry.session && (
+                            <span className={`mt-1 inline-block px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-tight ${entry.session === "Morning" ? "bg-orange-100 text-orange-700" : "bg-blue-100 text-blue-700"}`}>
+                              {entry.session}
+                            </span>
+                          )}
                         </div>
-                      ))}
-                    </div>
+                        <a
+                          href={entry.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-1.5 px-4 py-2 bg-maroon text-accent text-[10px] font-bold rounded-lg hover:bg-maroon-light transition-colors shadow-sm whitespace-nowrap"
+                        >
+                          ▶ Watch Live
+                        </a>
+                      </div>
+                    ))}
                   </div>
-                ))}
-              </div>
-            </div>
+                </div>
+              ))
+            )}
           </div>
         </div>
       </section>

@@ -122,9 +122,9 @@ export default function CalendarPage() {
         <div className="mt-8 text-center">
           <Link
             href="/services"
-            className="inline-block font-serif text-maroon underline underline-offset-4 decoration-accent hover:text-accent transition-colors text-base"
+            className="inline-flex items-center gap-2 px-6 py-3 bg-maroon text-accent text-xs font-bold uppercase tracking-widest rounded-xl hover:bg-maroon-light transition-colors shadow-md"
           >
-            Visit Pooja Services Page to know more details of charges and payment instructions
+            <span>→</span> Pooja Services & Charges
           </Link>
         </div>
 

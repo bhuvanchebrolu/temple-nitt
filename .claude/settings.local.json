@@ -1,7 +1,9 @@
 {
   "permissions": {
     "allow": [
-      "Bash(git rebase:*)"
+      "Bash(git rebase:*)",
+      "Bash(Get-ChildItem *)",
+      "Bash(xargs grep *)"
     ]
   }
 }

@@ -2,33 +2,59 @@ import { defineType, defineField } from "sanity";
 
 export const webcast = defineType({
         name: "webcast",
-        title: "Webcast Links",
+        title: "Webcast URL",
         type: "document",
         fields: [
                 defineField({
-                        name: "sessionSlot",
-                        title: "Select Day & Session",
+                        name: "title",
+                        title: "Category Title",
                         type: "string",
-                        options: {
-                                list: [
-                                        { title: "3 April - Morning", value: "3_april_morning" },
-                                        { title: "3 April - Evening", value: "3_april_evening" },
-                                        { title: "4 April - Morning", value: "4_april_morning" },
-                                        { title: "4 April - Evening", value: "4_april_evening" },
-                                        { title: "5 April - Morning", value: "5_april_morning" },
-                                        { title: "5 April - Evening", value: "5_april_evening" },
-                                        { title: "6 April - Morning", value: "6_april_morning" },
-                                        { title: "6 April - Evening", value: "6_april_evening" },
-                                ],
-                        },
+                        description: 'Groups entries together, e.g. "Kumbabishekam", "Mandala Poojai"',
                         validation: (Rule) => Rule.required(),
                 }),
                 defineField({
-                        name: "youtubeLink",
-                        title: "Web cast link",
-                        type: "text",
-                        placeholder: "https://link1.com, https://link2.com",
+                        name: "date",
+                        title: "Date",
+                        type: "date",
+                        options: { dateFormat: "DD MMMM YYYY" },
+                        validation: (Rule) => Rule.required(),
+                }),
+                defineField({
+                        name: "day",
+                        title: "Day",
+                        type: "string",
+                        description: 'e.g. Friday, Saturday',
+                        validation: (Rule) => Rule.required(),
+                }),
+                defineField({
+                        name: "session",
+                        title: "Session",
+                        type: "string",
+                        options: {
+                                list: [
+                                        { title: "Morning", value: "Morning" },
+                                        { title: "Afternoon", value: "Afternoon" },
+                                ],
+                                layout: "radio",
+                        },
+                }),
+                defineField({
+                        name: "subtitle",
+                        title: "Subtitle",
+                        type: "string",
+                        description: "Optional — shown below the date, e.g. Thiruvanandal Kumbabishekam",
+                }),
+                defineField({
+                        name: "url",
+                        title: "Webcast URL",
+                        type: "url",
                         validation: (Rule) => Rule.required(),
                 }),
         ],
+        preview: {
+                select: { title: "title", subtitle: "date" },
+                prepare({ title, subtitle }) {
+                        return { title, subtitle };
+                },
+        },
 });

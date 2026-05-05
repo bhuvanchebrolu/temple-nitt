@@ -81,7 +81,7 @@ export default function TempleVisitorsPage() {
                     {visitor.title ? `${visitor.title} ` : ""}{visitor.name}
                   </p>
                   {visitor.location && (
-                    <p className="text-[9px] md:text-[10px] text-accent/70 uppercase tracking-widest mt-1 font-medium">
+                    <p className="text-[9px] md:text-[10px] text-maroon/70 uppercase tracking-widest mt-1 font-medium">
                       {visitor.location}
                     </p>
                   )}
@@ -127,7 +127,7 @@ export default function TempleVisitorsPage() {
             {/* Content */}
             <div className="w-full md:w-1/2 p-8 md:p-14 lg:p-20 flex flex-col justify-center bg-gradient-to-br from-white to-orange-50/30 overflow-y-auto">
               {selected.title && (
-                <p className="text-[10px] text-accent uppercase tracking-[0.3em] font-bold mb-2">
+                <p className="text-[10px] text-maroon uppercase tracking-[0.3em] font-bold mb-2">
                   {selected.title}
                 </p>
               )}
