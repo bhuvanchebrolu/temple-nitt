@@ -140,6 +140,17 @@ export default function Footer() {
                 Library
               </Link>
             </li>
+            <li>
+              
+            </li>
+             <li>
+              <Link
+                href="/visitors"
+                className="hover:text-orange-400 transition-colors duration-300 block"
+              >
+                Temple Visitors
+              </Link>
+            </li>
             {/* New links added below will automatically fill the two columns */}
           </ul>
         </div>

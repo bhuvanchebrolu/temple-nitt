@@ -4,7 +4,13 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { client } from "@/sanity/lib/client";
 
-type WebcastEntry = { date: string; day: string; session?: string; subtitle?: string; url: string };
+type WebcastEntry = {
+  date: string;
+  day: string;
+  session?: string;
+  subtitle?: string;
+  url: string;
+};
 type WebcastGroup = { title: string; entries: WebcastEntry[] };
 
 const mandalaCharges = [
@@ -33,7 +39,7 @@ export default function KumbabishekamPage() {
       try {
         const [webcasts, balalayamData] = await Promise.all([
           client.fetch(
-            `*[_type == "webcast" && defined(title) && defined(date) && defined(url)] | order(date asc){ title, date, day, session, subtitle, url }`,
+            `*[_type == "webcast" && defined(title) && defined(date) && defined(url)] | order(order asc, date asc){ title, date, day, session, subtitle, url }`,
           ),
           client.fetch(
             `*[_type == "balalayam"][0]{ "url": videoFile.asset->url }`,
@@ -132,6 +138,17 @@ export default function KumbabishekamPage() {
           </div>
 
           <div className="lg:col-span-7 space-y-6">
+            <div className="px-6 py-6 bg-gradient-to-r from-maroon/5 via-accent/10 to-maroon/5 border-b border-accent/10">
+              <div className="flex items-center gap-4">
+                <div className="h-px flex-1 bg-gradient-to-r from-transparent via-accent/40 to-transparent" />
+
+                <h4 className="text-2xl md:text-3xl font-serif font-bold tracking-wide text-maroon  whitespace-nowrap">
+                  Event Photos
+                </h4>
+
+                <div className="h-px flex-1 bg-gradient-to-r from-transparent via-accent/40 to-transparent" />
+              </div>
+            </div>
             {webcastGroups.length === 0 ? (
               <div className="text-center py-20 text-gray-400 font-serif italic">
                 Webcast links will appear here once added.
@@ -174,9 +191,13 @@ export default function KumbabishekamPage() {
                           className="border-b border-accent/5 last:border-0 hover:bg-accent/5 transition-colors"
                         >
                           <td className="px-6 py-4">
-                            <p className="font-bold text-maroon">{entry.date}</p>
+                            <p className="font-bold text-maroon">
+                              {entry.date}
+                            </p>
                             {entry.subtitle && (
-                              <p className="text-xs text-gray-500 mt-0.5">{entry.subtitle}</p>
+                              <p className="text-xs text-gray-500 mt-0.5">
+                                {entry.subtitle}
+                              </p>
                             )}
                           </td>
                           <td className="px-6 py-4 text-gray-500 italic text-sm">
@@ -184,7 +205,9 @@ export default function KumbabishekamPage() {
                           </td>
                           <td className="px-6 py-4">
                             {entry.session ? (
-                              <span className={`inline-block px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-tight ${entry.session === "Morning" ? "bg-orange-100 text-orange-700" : "bg-blue-100 text-blue-700"}`}>
+                              <span
+                                className={`inline-block px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-tight ${entry.session === "Morning" ? "bg-orange-100 text-orange-700" : "bg-blue-100 text-blue-700"}`}
+                              >
                                 {entry.session}
                               </span>
                             ) : (
@@ -198,7 +221,7 @@ export default function KumbabishekamPage() {
                               rel="noopener noreferrer"
                               className="inline-flex items-center gap-1.5 px-4 py-2 bg-maroon text-accent text-[10px] font-bold rounded-lg hover:bg-maroon-light transition-colors shadow-sm"
                             >
-                              ▶ Watch Live
+                              Photo Album
                             </a>
                           </td>
                         </tr>
@@ -214,13 +237,21 @@ export default function KumbabishekamPage() {
                         className="px-4 py-3 flex items-center justify-between gap-4"
                       >
                         <div>
-                          <p className="font-bold text-maroon text-sm">{entry.date}</p>
+                          <p className="font-bold text-maroon text-sm">
+                            {entry.date}
+                          </p>
                           {entry.subtitle && (
-                            <p className="text-xs text-gray-500 mt-0.5">{entry.subtitle}</p>
+                            <p className="text-xs text-gray-500 mt-0.5">
+                              {entry.subtitle}
+                            </p>
                           )}
-                          <p className="text-xs text-gray-400 italic">{entry.day}</p>
+                          <p className="text-xs text-gray-400 italic">
+                            {entry.day}
+                          </p>
                           {entry.session && (
-                            <span className={`mt-1 inline-block px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-tight ${entry.session === "Morning" ? "bg-orange-100 text-orange-700" : "bg-blue-100 text-blue-700"}`}>
+                            <span
+                              className={`mt-1 inline-block px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-tight ${entry.session === "Morning" ? "bg-orange-100 text-orange-700" : "bg-blue-100 text-blue-700"}`}
+                            >
                               {entry.session}
                             </span>
                           )}

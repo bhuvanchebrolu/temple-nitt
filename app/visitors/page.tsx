@@ -34,7 +34,9 @@ export default function TempleVisitorsPage() {
       <section className="py-10 px-6 text-center border-b border-accent/10 bg-[#fffcf7]">
         <h1 className="text-3xl md:text-4xl font-serif font-bold text-maroon">
           Visits of{" "}
-          <span className="italic font-light text-accent">Swamijis & Spiritual Persona</span>
+          <span className="italic font-light text-accent">
+            Swamijis & Spiritual Persona
+          </span>
         </h1>
         <div className="w-16 h-1 bg-accent mx-auto mt-4" />
       </section>
@@ -67,7 +69,9 @@ export default function TempleVisitorsPage() {
                     />
                   ) : (
                     <div className="w-full h-full flex items-center justify-center bg-orange-50">
-                      <span className="text-5xl text-maroon/30 font-serif">ॐ</span>
+                      <span className="text-5xl text-maroon/30 font-serif">
+                        ॐ
+                      </span>
                     </div>
                   )}
                   <div className="absolute inset-0 bg-gradient-to-t from-[#5a1f1f]/90 via-[#5a1f1f]/20 to-transparent flex flex-col justify-end p-4 md:p-6 text-center">
@@ -77,9 +81,15 @@ export default function TempleVisitorsPage() {
                   </div>
                 </div>
                 <div className="mt-4 text-center px-2">
-                  <p className="text-[10px] md:text-xs font-bold uppercase tracking-[0.2em] text-gray-500 group-hover:text-maroon transition-colors leading-tight">
-                    {visitor.title ? `${visitor.title} ` : ""}{visitor.name}
-                  </p>
+                  {visitor.title && (
+                    <p className="text-[9px] md:text-[10px] font-extrabold uppercase tracking-[0.35em] text-maroon mb-2">
+                      {visitor.title}
+                    </p>
+                  )}
+
+                  <h3 className="text-lg md:text-2xl font-serif font-bold text-gray-900 leading-tight tracking-tight transition-all duration-300 group-hover:text-maroon group-hover:scale-[1.02]">
+                    {visitor.name}
+                  </h3>
                   {visitor.location && (
                     <p className="text-[9px] md:text-[10px] text-maroon/70 uppercase tracking-widest mt-1 font-medium">
                       {visitor.location}
@@ -127,9 +137,15 @@ export default function TempleVisitorsPage() {
             {/* Content */}
             <div className="w-full md:w-1/2 p-8 md:p-14 lg:p-20 flex flex-col justify-center bg-gradient-to-br from-white to-orange-50/30 overflow-y-auto">
               {selected.title && (
-                <p className="text-[10px] text-maroon uppercase tracking-[0.3em] font-bold mb-2">
-                  {selected.title}
-                </p>
+                <div className="mb-5 flex items-center gap-3">
+                  <div className="h-px w-10 bg-gradient-to-r from-transparent to-accent/60" />
+
+                  <p className="text-sm md:text-base font-serif italic font-semibold tracking-wide text-maroon/90">
+                    {selected.title}
+                  </p>
+
+                  <div className="h-px flex-1 bg-gradient-to-r from-accent/60 to-transparent" />
+                </div>
               )}
               <h2 className="text-3xl md:text-4xl font-serif font-bold text-gray-950 mb-4 tracking-tight leading-tight">
                 {selected.name}
@@ -139,13 +155,17 @@ export default function TempleVisitorsPage() {
               <div className="space-y-2 mb-6">
                 {selected.location && (
                   <p className="text-sm text-gray-500 font-medium">
-                    <span className="uppercase tracking-widest text-[10px] text-gray-400 font-bold mr-2">From</span>
+                    <span className="uppercase tracking-widest text-[10px] text-gray-400 font-bold mr-2">
+                      From
+                    </span>
                     {selected.location}
                   </p>
                 )}
                 {selected.date && (
                   <p className="text-sm text-gray-500 font-medium">
-                    <span className="uppercase tracking-widest text-[10px] text-gray-400 font-bold mr-2">Visited</span>
+                    <span className="uppercase tracking-widest text-[10px] text-gray-400 font-bold mr-2">
+                      Visited
+                    </span>
                     {selected.date}
                   </p>
                 )}
