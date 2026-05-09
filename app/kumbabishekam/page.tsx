@@ -120,6 +120,17 @@ export default function KumbabishekamPage() {
         <div className="grid lg:grid-cols-12 gap-12 lg:gap-16">
           <div className="lg:col-span-5 space-y-8">
             <div className="lg:sticky lg:top-32 text-center lg:text-left">
+              <div className="px-6 py-6 bg-gradient-to-r from-maroon/5 via-accent/10 to-maroon/5 border-b border-accent/10 mb-6 rounded-t-3xl">
+                <div className="flex items-center gap-4">
+                  <div className="h-px flex-1 bg-gradient-to-r from-transparent via-accent/40 to-transparent" />
+
+                  <h4 className="text-2xl md:text-3xl font-serif font-bold tracking-wide text-maroon whitespace-nowrap">
+                    Event Videos
+                  </h4>
+
+                  <div className="h-px flex-1 bg-gradient-to-r from-transparent via-accent/40 to-transparent" />
+                </div>
+              </div>
               <div className="relative group rounded-2xl md:rounded-[2rem] overflow-hidden shadow-2xl bg-black aspect-video mb-6 border border-accent/10">
                 <video
                   key={videoUrl}
@@ -139,14 +150,14 @@ export default function KumbabishekamPage() {
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-2 px-6 py-3 bg-maroon text-accent text-xs font-bold uppercase tracking-widest rounded-xl hover:bg-maroon-light transition-colors shadow-md"
                 >
-                  ↗ Event Videos
+                  ↗ Video Album
                 </a>
               </div>
             </div>
           </div>
 
           <div className="lg:col-span-7 space-y-6">
-            <div className="px-6 py-6 bg-gradient-to-r from-maroon/5 via-accent/10 to-maroon/5 border-b border-accent/10">
+            <div className="px-6 py-6 bg-gradient-to-r from-maroon/5 via-accent/10 to-maroon/5 border-b border-accent/10 rounded-t-3xl">
               <div className="flex items-center gap-4">
                 <div className="h-px flex-1 bg-gradient-to-r from-transparent via-accent/40 to-transparent" />
 
